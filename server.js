@@ -35,12 +35,41 @@ app.get('*', (req, res) => {
 
 
 app.post('/api/notes', (req, res) => {
-    
+    fs.readFile('db.json', 'utf8', (err, data) => {
+        if(err) {
+            console.log(err)
+            return res.status(500).json({error: 'Failed to read notes.'})
+        }
+
+        const note = JSON.parse(data);
+
+        const newNotes =  {
+            id: generateUniqueId(),
+            title: req.body.title,
+            text: req.body.text,
+        };
+
+        note.push(newNotes);
+
+        fs.writeFile('db.json', JSON.stringify(notes), (err) => {
+            if(err) {
+                console.log(err)
+                return res.status(500).json({error: 'Failed to read notes.'})
+            }
+
+            res.json(newNotes)
+        })
+    })
 })
 
 
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
+   
   });
 
+// helper function to generate a unique ID
+function generateUniqueId() {
+    return Math.random().toString(36).substr(2,9);
+}
