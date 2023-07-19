@@ -1,4 +1,4 @@
-const expresse = require('express')
+const express = require('express')
 const fs = require('fs')
 const path = require('path')
 
@@ -22,7 +22,7 @@ app.get('./public/assets/notes', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendFiled(path.join(__dirname, './public/index.html'));
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 app.get('/notes', (req, res) => {
